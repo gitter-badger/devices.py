@@ -1,6 +1,6 @@
 #=======================================
 # Author: Francois Laubscher
-# Date: 2014-09-04
+# Date: 2014-09-05
 # Description: Find all Windows devices connected to network
 #=======================================
 
@@ -9,8 +9,10 @@ import re
 import sys
 
 # gets local machine IP
-def get_ip():    
-    return str(socket.gethostbyname_ex(socket.gethostname())[2][1])
+def get_ip():
+    return str([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1])
+    # use this line if you're connected to more than one LAN
+    # return str(socket.gethostbyname_ex(socket.gethostname())[2][1]) 
 
 # gets subnet of local machine
 def get_subnet():
@@ -28,7 +30,7 @@ def get_subnet():
 # check if an address is connected to the network  
 def connected(addr):
     s = socket.socket()       
-    if s.connect_ex((addr, 135)) == 0: # this port is usually open on Windows machines
+    if s.connect_ex((addr, 135)) == 0: # this port is usually open on a Windows device
         s.close()             
         return True
     else:            
