@@ -41,7 +41,7 @@ def connected(addr):
                 s.close()
 
     
-    return false
+    return False
 
 
 # get all connected devices on network
