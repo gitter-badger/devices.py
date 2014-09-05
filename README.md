@@ -1,7 +1,7 @@
 devices.py
 ==========
 
-Find all devices connected to a local network
+Find all Windows devices connected to a local network
 
 # You might need to update this function yourself if you're connected to 2 or more networks.
 def get_ip():    
