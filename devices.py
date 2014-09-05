@@ -1,7 +1,7 @@
 #=======================================
 # Author: Francois Laubscher
 # Date: 2014-09-04
-# Description: Find all devices connected to network
+# Description: Find all Windows devices connected to network
 #=======================================
 
 import socket
@@ -27,21 +27,13 @@ def get_subnet():
 
 # check if an address is connected to the network  
 def connected(addr):
-    connected = False
-
-    while not connected:
-        for i in range(0, 2000):
-            sys.stdout.write('.')
-            s = socket.socket()
-            if s.connect_ex((addr, i)) == 0:
-                s.close()
-                connected = True                
-                return True
-            else:
-                s.close()
-
-    
-    return False
+    s = socket.socket()       
+    if s.connect_ex((addr, 135)) == 0: # this port is usually open on Windows machines
+        s.close()             
+        return True
+    else:            
+        s.close()
+        return False
 
 
 # get all connected devices on network
@@ -56,12 +48,13 @@ def list_devices():
 
         # check if this address is connected
         if(connected(address)):
-            devices.append(address)
+            print "{0} connected as {1}".format(address, socket.getfqdn(address))
+            #devices.append(address)
 
     return devices
 
 print "\r"
-print list_devices()
+list_devices()
 raw_input("Done")
 
 
